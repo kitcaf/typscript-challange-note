@@ -21,7 +21,6 @@ type result = TupleToObject<typeof tuple> // expected { 'tesla': 'tesla', 'model
 
 解题关键：
 - T[number]可以将一个元组类型转换为联合类型
-- 
 
 因此：
 - 第一步：将元组类型（需要通过extends进行限制）转换为联合类型
