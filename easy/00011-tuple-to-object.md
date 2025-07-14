@@ -19,17 +19,47 @@ type result = TupleToObject<typeof tuple> // expected { 'tesla': 'tesla', 'model
 
 ## 解题思路
 
-<!-- 在这里记录你的解题思路和学习笔记 -->
+解题关键：
+- T[number]可以将一个元组类型转换为联合类型
+- 
+
+因此：
+- 第一步：将元组类型（需要通过extends进行限制）转换为联合类型
+- 第二步：开始遍历。构建对象类型
+- 第三步：返回构建的对象类型
 
 ## 代码实现
 
 ```typescript
-// 在这里实现你的解决方案
+type TupleToObject<T extends readonly any[]> = {
+	[K in T[number]]: K;
+};
+```
+但是T可能是任何类型[[1, 2], {}]，这种类型无法TupleToObject，因此需要限制非对象类型的元组类型。对元组限制非对象类型
+
+```typescript
+type TupleToObject<T extends readonly (number | string | symbol)[]> = {
+	[K in T[number]]: K;
+};
 ```
 
 ## 知识点总结
 
-<!-- 在这里总结相关的 TypeScript 知识点 -->
+- T[number] - 访问 T 里所有索引的类型并转换为联合类型
+- extends关键字的作用
+（1）类型约束：用于泛型参数，限制传入的类型必须是某个类型的子类型。
+```
+function fn<T extends string>(arg: T) { ... }
+// 这里 T 只能是 string 或 string 的子类型
+```
+（2）条件类型：用于类型判断和分支。
+```
+type IsString<T> = T extends string ? true : false
+// 如果 T 是 string，则结果为 true，否则为 false
+```
+- 元组类型： any[]
+（1）非对象的元组类型(number | string | symbol)[]
+
 
 ## 参考链接
 
