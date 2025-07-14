@@ -34,15 +34,53 @@ todo.description = "barFoo" // Error: cannot reassign a readonly property
 
 <!-- 在这里记录你的解题思路和学习笔记 -->
 
+解题关键：
+
+- MyReadonly<T> 最后一定是返回T这个类型
+- MyReadonly<T> 返回的T类型中的每一个（深度）属性都都是不能修改，设置属性不可修改涉及readonly 关键字
+
+因此：
+- 第一：可以遍历T类型的所有属性 --- 遍历对象操作：[K in keyof T]: T[K]
+- 并对每一个类型赋值一个readonly关键字 --- readonly
+- 并返回属性不可修改的T类型 --- {}
+
 ## 代码实现
 
 ```typescript
-// 在这里实现你的解决方案
+type MyReadonly<T> = {
+	readonly [K in keyof T]: T[K];
+};
 ```
 
 ## 知识点总结
 
 <!-- 在这里总结相关的 TypeScript 知识点 -->
+- keyof 关键字获取某个类型的所有属性名
+- [K in 联合类型] : ... 映射类型的遍历对象，其中K是每一个联合类型的属性
+
+## 继续思考
+
+- 当前的MyReadonly其实不会阻止对深层对象的修改 , 能不能继续递归所有子对象也是readonly？
+```
+type MyReadonly<T> = {
+	readonly [K in keyof T]: T[K];
+};
+
+interface Todo2 {
+	title: string;
+	meta: {
+		author: string;
+	};
+}
+
+const obj:  MyReadonly<Todo2> = {
+	title: "Hey",
+	meta: {
+		author: "hello",
+	},
+};
+obj.meta.author = "li hua"; // right
+```
 
 ## 参考链接
 
