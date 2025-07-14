@@ -45,7 +45,8 @@ type TupleToObject<T extends readonly (number | string | symbol)[]> = {
 ## 知识点总结
 
 - T[number] - **访问 元组类型T里所有索引的类型并转换为联合类型**
-- extends关键字的作用
+- extends关键字的作用：
+
 （1）**类型约束**：用于泛型参数，限制传入的类型必须是某个类型的子类型。
 ```
 function fn<T extends string>(arg: T) { ... }
@@ -61,6 +62,5 @@ type IsString<T> = T extends string ? true : false
 
 
 ## 参考链接
-
 - [原题链接](https://github.com/type-challenges/type-challenges/tree/main/questions/00011-easy-tuple-to-object)
 - [TypeScript 官方文档](https://www.typescriptlang.org/docs/)
