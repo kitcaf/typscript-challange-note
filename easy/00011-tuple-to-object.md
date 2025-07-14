@@ -20,10 +20,10 @@ type result = TupleToObject<typeof tuple> // expected { 'tesla': 'tesla', 'model
 ## 解题思路
 
 解题关键：
-- T[number]可以将一个元组类型转换为联合类型
+- T[number]可以将一个**元组类型转换为联合类型**
 
 因此：
-- 第一步：将元组类型（需要通过extends进行限制）转换为联合类型
+- 第一步：将元组类型（**需要通过extends进行限制**）转换为联合类型
 - 第二步：开始遍历。构建对象类型
 - 第三步：返回构建的对象类型
 
@@ -44,20 +44,20 @@ type TupleToObject<T extends readonly (number | string | symbol)[]> = {
 
 ## 知识点总结
 
-- T[number] - 访问 T 里所有索引的类型并转换为联合类型
+- T[number] - **访问 元组类型T里所有索引的类型并转换为联合类型**
 - extends关键字的作用
-（1）类型约束：用于泛型参数，限制传入的类型必须是某个类型的子类型。
+（1）**类型约束**：用于泛型参数，限制传入的类型必须是某个类型的子类型。
 ```
 function fn<T extends string>(arg: T) { ... }
 // 这里 T 只能是 string 或 string 的子类型
 ```
-（2）条件类型：用于类型判断和分支。
+（2）**条件类型**：用于类型判断和分支。
 ```
 type IsString<T> = T extends string ? true : false
 // 如果 T 是 string，则结果为 true，否则为 false
 ```
 - 元组类型： any[]
-（1）非对象的元组类型(number | string | symbol)[]
+（1）**非对象的元组类型** (number | string | symbol)[]
 
 
 ## 参考链接
