@@ -53,7 +53,30 @@ type MyReadonly<T> = {
 
 <!-- 在这里总结相关的 TypeScript 知识点 -->
 - keyof 关键字获取某个类型的所有属性名
-- [K in 联合类型('hello'|'test')] : ... 映射类型的遍历对象，其中K是每一个联合类型的属性
+- `{[K in 联合类型('hello'|'test')] : ... }` 映射类型的遍历对象（**映射类型**），其中K是每一个联合类型的属性。**因为映射类型只能在必须在 {} 内，因此映射类型通常是用来创建一个新的对象类型** 
+
+**关于映射类型通常是用来创建一个新的对象类型可以看下面的例子**：
+``` typescript
+//报错的写法
+type Includes<T extends readonly any[], U> = [K in T[number]]: boolean;
+//error ↑ 这里 TypeScript 把它理解为数组字面量！
+//其实就可以理解编译器将这个类型别名看错Includes = [] （元组类型）。在加上:后就报错了。如果不加是可以通过编译的
+
+type Includes<T extends readonly any[], U> = [T[number]];
+type Arr = ["a", "b", "c"];
+type c = Includes<Arr, true>;
+// c = type c = ["a" | "b" | "c"]
+
+//因此为什么说映射类型必须返回一个新的对象，就是一定在{}里面
+type Includes<T extends readonly any[], U> = { [K in T[number]]: K extends U ? true : false };
+type Arr = ["a", "b", "c"];
+type Ac = Includes<Arr, true>;
+// type Ac = {
+//     a: false;
+//     b: false;
+//     c: false;
+// }
+```
 
 ## 继续思考
 

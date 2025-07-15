@@ -2,7 +2,7 @@
 
 这是一个基于 [type-challenges](https://github.com/type-challenges/type-challenges) 的 TypeScript 学习项目。本项目专注于记录每道 TypeScript 类型挑战题目的学习笔记
 
-> 欢迎给的github点start, thank!!!
+> 欢迎github点start, thank!!!
 
 **练题链接**：[专业练题链接](https://typehero.dev/) 可以直接刷type-challenges里面的题目，类似**leetcode**
 

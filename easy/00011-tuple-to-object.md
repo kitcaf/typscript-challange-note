@@ -47,12 +47,17 @@ type TupleToObject<T extends readonly (number | string | symbol)[]> = {
 - T[number] - **访问 元组类型T里所有索引的类型并转换为联合类型**
 - extends关键字的作用：
 
-（1）**类型约束**：用于泛型参数，限制传入的类型必须是某个类型的子类型。
+（1）**类型约束**：`T extends A`用于泛型参数，限制传入的类型必须是某个类型的子类型。
 ```
 function fn<T extends string>(arg: T) { ... }
 // 这里 T 只能是 string 或 string 的子类型
 ```
-（2）**条件类型**：用于类型判断和分支。
+（2）**条件类型**：`T extends A ? true : false` 用于类型判断和分支。
+注意：`T extends A ? true : false` 的条件类型是**兼容性判断**
+
+兼容性判断：**T 是否可以赋值给 A，即 T 是否是 A 的子类型**
+
+
 ```
 type IsString<T> = T extends string ? true : false
 // 如果 T 是 string，则结果为 true，否则为 false
