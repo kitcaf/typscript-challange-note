@@ -33,8 +33,8 @@ todo.description = "barFoo" // Error: cannot reassign a readonly property
 ## 解题思路
 
 解题关键：
-- MyReadonly<T> 最后一定是返回T这个类型
-- MyReadonly<T> 返回的T类型中的每一个（深度）属性都都是不能修改，设置属性不可修改涉及readonly 关键字
+- `MyReadonly<T>` 最后一定是返回T这个类型
+- `MyReadonly<T>`  返回的T类型中的每一个（深度）属性都都是不能修改，设置属性不可修改涉及readonly 关键字
 
 因此：
 - 第一步：可以遍历T类型的所有属性 --- 遍历对象操作：[K in keyof T]: T[K]

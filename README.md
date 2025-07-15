@@ -1,6 +1,10 @@
 # TypeScript Challenges 学习笔记
 
-这是一个基于 [type-challenges](https://github.com/type-challenges/type-challenges) 的 TypeScript 学习项目。本项目专注于记录每道 TypeScript 类型挑战题目的学习笔记，并通过 VuePress 构建为响应式网站展示。
+这是一个基于 [type-challenges](https://github.com/type-challenges/type-challenges) 的 TypeScript 学习项目。本项目专注于记录每道 TypeScript 类型挑战题目的学习笔记
+
+> 欢迎给的github点start, thank!!!
+
+**练题链接**：[专业练题链接](https://typehero.dev/) 可以直接刷type-challenges里面的题目，类似**leetcode**
 
 ## 项目特色
 
@@ -9,18 +13,6 @@
 - 📱 **响应式**: 基于 VuePress 的现代化网站
 - 🤖 **自动化**: 脚本化处理重复工作
 - 🔍 **易搜索**: 内置搜索功能，快速定位题目
-
-## 目录结构
-
-```
-├── 1.easy/           # 简单难度题目
-├── 2.medium/         # 中等难度题目
-├── 3.hard/           # 困难难度题目
-├── 4.extreme/        # 极限难度题目
-├── .vuepress/        # VuePress 配置
-├── tools/            # 自动化工具
-└── README.md         # 项目说明
-```
 
 ## 快速开始
 
@@ -54,36 +46,6 @@ npm run docs:dev
 npm run docs:build
 ```
 
-## 学习建议
-
-1. **按难度循序渐进**: 从简单题目开始，逐步提高难度
-2. **动手实践**: 每道题都要亲自实现，不要只看答案
-3. **理解原理**: 深入理解题目背后的 TypeScript 概念
-4. **记录心得**: 在笔记中记录解题思路和学习收获
-5. **反复复习**: 定期回顾之前的题目，巩固知识
-
-## 笔记格式
-
-每个题目的笔记都遵循统一格式：
-
-```markdown
-# 题目名称
-
-## 题目描述
-{从 type-challenges 仓库抓取的原始题目内容}
-
-## 解题思路
-{个人学习笔记和解析}
-
-## 代码实现
-{TypeScript 代码}
-
-## 知识点总结
-{相关概念和延伸知识}
-
-## 参考链接
-{相关资源}
-```
 
 ## 相关资源
 

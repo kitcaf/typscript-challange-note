@@ -19,10 +19,10 @@ type result = TupleToObject<typeof tuple> // expected { 'tesla': 'tesla', 'model
 
 ## 解题思路
 
-解题关键：
+### 解题关键
 - T[number]可以将一个**元组类型转换为联合类型**
 
-因此：
+#### 核心步骤
 - 第一步：将元组类型（**需要通过extends进行限制**）转换为联合类型
 - 第二步：开始遍历。构建对象类型
 - 第三步：返回构建的对象类型
@@ -58,6 +58,7 @@ type IsString<T> = T extends string ? true : false
 // 如果 T 是 string，则结果为 true，否则为 false
 ```
 - 元组类型： any[]
+
 （1）**非对象的元组类型** (number | string | symbol)[]
 
 

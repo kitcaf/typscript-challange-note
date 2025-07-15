@@ -21,17 +21,23 @@ type spaceXLength = Length<spaceX> // expected 5
 
 ## 解题思路
 
-<!-- 在这里记录你的解题思路和学习笔记 -->
+### 解题关键
+
+- 对于元组类型T， T['length'] 可以返回元组类型的长度
+
 
 ## 代码实现
 
 ```typescript
-// 在这里实现你的解决方案
+type Length<T extends readonly any[]> = T["length"];
 ```
+
+注：因为T类型是在const数组变量typeof，因此得到的类型是readonly[] 只读元组类型, 因此要加入`readonly any[]`限制是只读元组类型
 
 ## 知识点总结
 
-<!-- 在这里总结相关的 TypeScript 知识点 -->
+- **返回元组类型长度**：T["length"]
+- `readonly any[]` **readonly可以限制任何类型**
 
 ## 参考链接
 
