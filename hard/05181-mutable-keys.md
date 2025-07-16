@@ -4,7 +4,7 @@
 
 <!--info-header-start--><h1>Mutable Keys <img src="https://img.shields.io/badge/-hard-de3d37" alt="hard"/> <img src="https://img.shields.io/badge/-%23utils-999" alt="#utils"/></h1><blockquote><p>by Yugang Cao <a href="https://github.com/Talljack" target="_blank">@Talljack</a></p></blockquote><p><a href="https://tsch.js.org/5181/play" target="_blank"><img src="https://img.shields.io/badge/-Take%20the%20Challenge-3178c6?logo=typescript&logoColor=white" alt="Take the Challenge"/></a> </p><!--info-header-end-->
 
-Implement the advanced util type MutableKeys<T>, which picks all the mutable (not readonly) keys into a union.
+Implement the advanced util type `MutableKeys<T>`, which picks all the mutable (not readonly) keys into a union.
 
 For example:
 
