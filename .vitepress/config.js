@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-    title: 'TypeScript Challenges 学习笔记',
-    description: 'TypeScript 类型挑战学习记录',
+    title: 'Ts-Challenges 学习笔记',
+    description: 'Ts-Challenges 类型挑战学习记录',
     // base: '/ts-challenge-note/', // 开发模式下注释掉，生产环境需要时再启用
     lang: 'zh-CN',
 
