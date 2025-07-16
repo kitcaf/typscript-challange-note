@@ -21,17 +21,54 @@ type Result = MyAwaited<ExampleType> // string
 
 ## 解题思路
 
-<!-- 在这里记录你的解题思路和学习笔记 -->
+### 解题核心
+
+- 其实问题就是推断包装类内部的类型，infer推断
+- 那么其实就是extends递归 + infer 进行不断推断Promise的包装类型
+
+### 解题流程
+
+- 如果是Promise类型，那么推断出包装类型
+- 将包装类型继续进行递归判断是不是Promise类型
+- 最后如果不是Promise类型那么就可以返回输入类型了
 
 ## 代码实现
 
 ```typescript
-// 在这里实现你的解决方案
+type MyAwaited<T> = T extends Promise<infer In> ? MyAwaited<In> : T;
 ```
 
+**但是当前的方法是不能解决问题，因为存在thenable 类型（类Promise类型）**
+
+```typescript
+type T = { then: (onfulfilled: (arg: number) => any) => any }
+Expect<Equal<MyAwaited<T>, number>>,
+```
+
+因此直接特判
+
+```typescript
+type MyAwaited<T> =
+	T extends Promise<infer In>
+		? MyAwaited<In>
+		: //加入特判
+			T extends { then: (onfulfilled: (arg: infer U) => any) => any }
+			? U
+			: T;
+```
 ## 知识点总结
 
-<!-- 在这里总结相关的 TypeScript 知识点 -->
+- **模式匹配语法infer（如果X符合某种模式，那么推断出其中的某个部分）**
+
+1. Promise 类型解构
+
+``` typescript
+type Awaited<T> = T extends Promise<infer U> ? U : T;
+type Result = Awaited<Promise<string>>; // string
+```
+
+- thenable类型：**任何具有 then 方法的对象类型**
+
 
 ## 参考链接
 

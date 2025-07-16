@@ -57,6 +57,15 @@ function fn<T extends string>(arg: T) { ... }
 
 兼容性判断：**T 是否可以赋值给 A，即 T 是否是 A 的子类型**
 
+在兼容性判定的基础上就会出现**修饰符差异**：
+
+```typescript
+type A = [1] extends readonly [1] ? true : false; // true
+//[1] 可以赋值给 readonly [1]，因为可变数组可以变成只读数组
+type B = readonly [1] extends [1] ? true : false; // false
+//但 readonly [1] 不能赋值给 [1]，因为只读数组不能变成可变数组
+```
+
 
 ```
 type IsString<T> = T extends string ? true : false

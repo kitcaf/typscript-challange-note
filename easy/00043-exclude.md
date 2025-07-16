@@ -18,17 +18,74 @@ type Result = MyExclude<'a' | 'b' | 'c', 'a'> // 'b' | 'c'
 
 ## 解题思路
 
-<!-- 在这里记录你的解题思路和学习笔记 -->
+`MyExclude<T, U>` T和U都是联合类型，将T中的的联合属性去掉U对应的联合类型
+
+### 解题关键
+
+- **分布式条件类型**：当条件类型作用于联合类型时，TypeScript **会自动分发**
+- **never 类型的过滤**：never 在联合类型中会被自动忽略
+
+### 解题流程
+
+1. 利用分布式条件类型，让 T 中的每个联合成员分别与 U 进行比较
+2. 如果某个成员属于 U，返回 never（表示排除）
+3. 如果某个成员不属于 U，返回该成员本身
+4. never 会在最终的联合类型中被自动过滤掉
+
+**分发过程演示：**
+```typescript
+MyExclude<'a' | 'b' | 'c', 'a'>
+
+// 自动分发为：
+= MyExclude<'a', 'a'> | MyExclude<'b', 'a'> | MyExclude<'c', 'a'>
+
+// 分别计算：
+= ('a' extends 'a' ? never : 'a') | ('b' extends 'a' ? never : 'b') | ('c' extends 'a' ? never : 'c')
+
+// 结果：
+= never | 'b' | 'c'
+
+// never 被过滤：
+= 'b' | 'c'
+```
+
+**T 和 U 都是联合类型时的分发：**
+```typescript
+MyExclude<'a' | 'b' | 'c', 'a' | 'b'>
+
+// 只有 T 被分发，U 保持为 'a' | 'b'：
+= MyExclude<'a', 'a' | 'b'> | MyExclude<'b', 'a' | 'b'> | MyExclude<'c', 'a' | 'b'>
+
+// 分别计算：
+= ('a' extends 'a' | 'b' ? never : 'a') | ('b' extends 'a' | 'b' ? never : 'b') | ('c' extends 'a' | 'b' ? never : 'c')
+
+// 结果：
+= never | never | 'c'
+
+// never 被过滤：
+= 'c'
+```
 
 ## 代码实现
 
 ```typescript
-// 在这里实现你的解决方案
+type MyExclude<T, U> = T extends U ? never : T;
 ```
 
 ## 知识点总结
 
-<!-- 在这里总结相关的 TypeScript 知识点 -->
+- **分布式条件类型（Distributive Conditional Types）**
+  - 当条件类型 `T extends U ? X : Y` 中的 T 是联合类型时，会自动分发
+  - **只有左边的 T 会分发，右边的 U 保持完整**
+  - 相当于 `(A | B | C) extends U ? X : Y` → `(A extends U ? X : Y) | (B extends U ? X : Y) | (C extends U ? X : Y)`
+
+- **never 类型的特性**
+  - `never` 在联合类型中会被自动过滤掉
+  - `'a' | never | 'b'` → `'a' | 'b'`
+
+- **联合类型操作**
+  - 这种模式常用于从联合类型中排除特定类型
+  - TypeScript 内置的 `Exclude<T, U>` 就是这样实现的
 
 ## 参考链接
 

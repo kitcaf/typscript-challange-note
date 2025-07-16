@@ -12,24 +12,84 @@
 type Result = Concat<[1], [2]> // expected to be [1, 2]
 ```
 
-
-
 <!--info-footer-start--><br><a href="../../README.zh-CN.md" target="_blank"><img src="https://img.shields.io/badge/-%E8%BF%94%E5%9B%9E%E9%A6%96%E9%A1%B5-grey" alt="返回首页"/></a> <a href="https://tsch.js.org/533/answer/zh-CN" target="_blank"><img src="https://img.shields.io/badge/-%E5%88%86%E4%BA%AB%E4%BD%A0%E7%9A%84%E8%A7%A3%E7%AD%94-teal" alt="分享你的解答"/></a> <a href="https://tsch.js.org/533/solutions" target="_blank"><img src="https://img.shields.io/badge/-%E6%9F%A5%E7%9C%8B%E8%A7%A3%E7%AD%94-de5a77?logo=awesome-lists&logoColor=white" alt="查看解答"/></a> <hr><h3>相关挑战</h3><a href="https://github.com/type-challenges/type-challenges/blob/main/questions/03057-easy-push/README.zh-CN.md" target="_blank"><img src="https://img.shields.io/badge/-3057%E3%83%BBPush-7aad0c" alt="3057・Push"/></a>  <a href="https://github.com/type-challenges/type-challenges/blob/main/questions/03060-easy-unshift/README.zh-CN.md" target="_blank"><img src="https://img.shields.io/badge/-3060%E3%83%BBUnshift-7aad0c" alt="3060・Unshift"/></a> <!--info-footer-end-->
 
 
 ## 解题思路
 
-<!-- 在这里记录你的解题思路和学习笔记 -->
+### 解题关键
+
+- ** ... 展开操作符（spread operator）**： `type NewTuple = [...Tuple1, ...Tuple2, Element];` 可以合并、插入、拼接多个元组类型。
+
+### 解题流程
+
+写法一：递归
+- 每次取出最后一个元素进行拼接
+
+写法二：直接...展开
+- 直接...全部展开元素操作符
+
 
 ## 代码实现
 
 ```typescript
-// 在这里实现你的解决方案
+方法一：
+type Concat<T extends readonly any[], U extends readonly any[]> = U extends readonly [
+	infer Fi,
+	...infer Re,
+]
+	? Concat<[...T, Fi], Re>
+	: T;
+
+方法二：
+type Concat<T extends readonly any[], U extends readonly any[]> = [...T, ...U];
 ```
 
 ## 知识点总结
 
-<!-- 在这里总结相关的 TypeScript 知识点 -->
+- 展开操作符（spread operator）
+
+作用：
+1. **展开元组或数组类型的所有元素**，用于构造新的元组类型。
+2. 可以合并、插入、拼接多个元组类型。
+
+语法：
+```typescript
+type NewTuple = [...Tuple1, ...Tuple2, Element];
+```
+
+拓展用法:
+
+1.拼接元组
+
+```typescript
+type Concat<T extends any[], U extends any[]> = [...T, ...U];
+type Result = Concat<[1, 2], [3, 4]>; // [1, 2, 3, 4]
+```
+2. 添加元素
+
+```typescript
+type Push<T extends any[], U> = [...T, U]; // 末尾添加
+type Unshift<T extends any[], U> = [U, ...T]; // 开头添加
+```
+3. 拆分元组（... 是剩余元素操作符（rest operator）
+
+```typescript
+type Split<T extends any[]> = T extends [infer First, ...infer Rest] ? [First, Rest] : never;
+type S = Split<[1, 2, 3]>; // [1, [2, 3]]
+```
+4. 组合多个元组
+
+```typescript
+type Merge<T extends any[], U extends any[], V extends any[]> = [...T, ...U, ...V];
+type M = Merge<[1], [2], [3, 4]>; // [1, 2, 3, 4]
+```
+
+5. 递归构造
+```typescript
+type Reverse<T extends any[]> = T extends [infer First, ...infer Rest] ? [...Reverse<Rest>, First] : [];
+type R = Reverse<[1, 2, 3]>; // [3, 2, 1]
+```
 
 ## 参考链接
 

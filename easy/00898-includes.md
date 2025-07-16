@@ -184,9 +184,7 @@ type Reverse<T extends readonly any[]> =
     : [];
 ```
 
-
-
-- `... 是剩余元素操作符（rest operator）`，用于收集剩余的元素到一个新的元组类型中。**在 TypeScript 类型系统中只能用于元组或数组类型的解构**
+- `... 是剩余元素操作符（rest operator）`，用于收集剩余的元素到一个新的元组类型中。**在 TypeScript 类型系统中只能用于 extends条件类型中的元组或数组类型的解构，注意区别展开操作符**
 
 因此可以看到
 ``` typescript
@@ -196,9 +194,6 @@ type Example<T> = T extends [infer First, infer Se] ? Rest : never;
 type Example<T> = T extends [infer First, ...infer Rest] ? Rest : never;
 //首先是...将剩余元素都搜集到新的元素类型类型然后使用infer进行推断提取类型
 ```
-
-
-
 
 - **函数类型的结构相等性**：**两个泛型函数类型相等，当且仅当它们对所有可能的类型参数 T 都产生相同的行为**
 
