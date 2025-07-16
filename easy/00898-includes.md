@@ -184,7 +184,7 @@ type Reverse<T extends readonly any[]> =
     : [];
 ```
 
-- `... 是剩余元素操作符（rest operator）`，用于收集剩余的元素到一个新的元组类型中。**在 TypeScript 类型系统中只能用于 extends条件类型中的元组或数组类型的解构，注意区别展开操作符**
+- `... 是剩余元素/参数操作符（rest operator/Parameters）`，用于收集剩余的元素到一个新的元组类型中。**在 TypeScript 类型系统中只能用于 extends条件类型中的元组或数组类型的解构，注意区别展开操作符**
 
 因此可以看到
 ``` typescript
