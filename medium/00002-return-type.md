@@ -24,17 +24,20 @@ type a = MyReturnType<typeof fn> // 应推导出 "1 | 2"
 
 ## 解题思路
 
-<!-- 在这里记录你的解题思路和学习笔记 -->
+### 解题核心
+
+- **可以通过函数类型推断出它的返回类型**, infer + extends
+
 
 ## 代码实现
 
 ```typescript
-// 在这里实现你的解决方案
+type MyReturnType<T extends Function> = T extends (...arg: any) => infer R ? R : never;
 ```
 
 ## 知识点总结
 
-<!-- 在这里总结相关的 TypeScript 知识点 -->
+- **模式匹配语法（infer 关键字）：** 允许在**条件约束（extend）**中**解构和提取类型信息**
 
 ## 参考链接
 
