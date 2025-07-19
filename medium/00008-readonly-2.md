@@ -33,17 +33,86 @@ todo.completed = true // OK
 
 ## 解题思路
 
-<!-- 在这里记录你的解题思路和学习笔记 -->
+### 解题核心
+
+最后的结果是返回一个对象类型，那么一定是涉及到`{[]:...}`映射操作符，但是一次映射操作符要么是**全属性Readonly要么是全属性非Readonly**, 但是题目要求是K属性集是Readonly其他的属性是正常映射。
+1. K属性集是Readonly一个映射对象
+2. 非K属性集是正常映射对象类型
+**然后对两个对象类型进行交集操作即可**
+
+- 泛型参数的默认值，设置参数默认值
+- & 是**交叉类型（Intersection Type）**操作符：用于将多个类型“合并”为一个新类型，要求新类型同时满足所有类型的约束
+
+### 解题流程
 
 ## 代码实现
 
 ```typescript
-// 在这里实现你的解决方案
+type MyReadonly2<T, K extends keyof T = keyof T> = {
+	readonly [P in K]: T[P];
+} & {
+	[P in keyof T as P extends K ? never : P]: T[P];
+};
 ```
 
 ## 知识点总结
 
-<!-- 在这里总结相关的 TypeScript 知识点 -->
+一、& 是**交叉类型（Intersection Type）**操作符，用于将多个类型"合并"为一个新类型，要求新类型同时满足所有类型的约束
+
+**基础用法**:
+
+   ```typescript
+1. 合并对象类型
+
+   type A = { x: number }
+   type B = { y: string }
+   type C = A & B // { x: number; y: string }
+
+2. 合并接口
+
+   interface WithId { id: number }
+   interface WithName { name: string }
+   type User = WithId & WithName // { id: number; name: string }
+   
+3. 同名属性合并
+   type X = { a: number; b: string }
+   type Y = { a: number; c: boolean }
+   type Z = X & Y // { a: number; b: string; c: boolean }
+   // 注意：如果同名属性类型不兼容，结果为 never
+```
+
+**拓展用法**:
+```typescript
+1. 与映射类型结合
+   // 像本题的解法
+   type ReadonlyPart<T, K extends keyof T> = { readonly [P in K]: T[P] }
+   type RestPart<T, K extends keyof T> = { [P in keyof T as P extends K ? never : P]: T[P] }
+   type MyReadonly2<T, K extends keyof T> = ReadonlyPart<T, K> & RestPart<T, K>
+
+2. 工具类型增强
+   type WithTimestamp<T> = T & { timestamp: number }
+   type Data = { value: string }
+   type DataWithTime = WithTimestamp<Data> // { value: string; timestamp: number }
+
+3. 类型约束
+   type StringOrNumber = string | number
+   type HasLength = { length: number }
+   
+   // 函数参数既可以是字符串也可以是数组
+   function getLength<T extends StringOrNumber & HasLength>(x: T): number {
+     return x.length
+   }
+
+4. 联合类型交叉
+   type A = { a: number } | { b: string }
+   type B = { c: boolean }
+   type C = A & B // { a: number; c: boolean } | { b: string; c: boolean }
+
+5. 多重约束
+   function merge<T extends object, U extends object>(a: T, b: U): T & U {
+     return { ...a, ...b }
+   }
+```
 
 ## 参考链接
 

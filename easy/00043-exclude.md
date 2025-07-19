@@ -74,16 +74,35 @@ type MyExclude<T, U> = T extends U ? never : T;
 
 ## 知识点总结
 
-- **分布式条件类型（Distributive Conditional Types）**
-  - 当条件类型 `T extends U ? X : Y` 中的 T 是联合类型时，会自动分发
+一、 **分布式条件类型（Distributive Conditional Types）**
+  - 当条件类型 `T extends U ? X : Y` 中的 T 是联合类型并且是**裸类型参数**时，会自动分发
   - **只有左边的 T 会分发，右边的 U 保持完整**
   - 相当于 `(A | B | C) extends U ? X : Y` → `(A extends U ? X : Y) | (B extends U ? X : Y) | (C extends U ? X : Y)`
 
-- **never 类型的特性**
+关于**裸类型参**, 就是extends的左边完完全全是联合类型，而不是经过计算得出的结果，比如**keyof**的计算的结果不会进行分发
+
+```typescript
+// 1. 首先证明 keyof 不会分发
+type TestObject = {
+	h: {
+		i: true;
+		j: "string";
+	};
+};
+
+// 当我们使用 keyof T[P] 时：
+type Keys = keyof TestObject["h"]; // "i" | "j"
+
+// 2. 在条件类型中的行为
+type TestCondition<T> = keyof T extends "i" ? "is never" : "not never";
+type Result1 = TestCondition<{ i: true; j: "string" }>; // "not never"
+```
+
+二、 **never 类型的特性**
   - `never` 在联合类型中会被自动过滤掉
   - `'a' | never | 'b'` → `'a' | 'b'`
 
-- **联合类型操作**
+三、 **联合类型操作**
   - 这种模式常用于从联合类型中排除特定类型
   - TypeScript 内置的 `Exclude<T, U>` 就是这样实现的
 

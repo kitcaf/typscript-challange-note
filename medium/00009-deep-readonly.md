@@ -35,17 +35,102 @@ type Todo = DeepReadonly<X> // should be same as `Expected`
 
 ## 解题思路
 
-<!-- 在这里记录你的解题思路和学习笔记 -->
+### 解题核心
+
+初版的Readonly是`readonly [P in keyof T]: T[P];`, 但是现在的情况是`T[P]`可能是对象类型，因此需要递归处理。所以核心是**检查是否是对象类型**
+
+判断一个类型是否为对象类型的方法：
+
+1. **使用 `extends object` 判断**
+   ```typescript
+   type IsObject<T> = T extends object ? true : false;
+   ```
+   但这种方法会将数组、函数等也识别为对象类型。
+
+2. **排除特定类型**
+   ```typescript
+   type IsObject<T> = T extends object
+     ? T extends Array<any> ? false : true
+     : false;
+   ```
+
+3. **更完整的判断**
+   ```typescript
+   type IsObject<T> = T extends object
+     ? T extends Array<any> 
+       ? false 
+       : T extends Function
+         ? false
+         : true
+     : false;
+   ```
+
+4. **通过属性检测**：`Record<K, T> `是 TypeScript 内置的工具类型，它创建一个类型，该类型的属性键是 K 类型，属性值是 T 类型。
+   ```typescript
+   type IsRecord<T> = T extends Record<string, any> ? true : false;
+   ```
+
+在DeepReadonly中，我们需要递归处理对象类型的属性，同时保留原始类型：
+
+- extends递归函数
 
 ## 代码实现
 
 ```typescript
-// 在这里实现你的解决方案
+最好的使用方法是Record<K, T> / object 可以避免很多的条件判断
+type DeepReadonly<T> = {
+	readonly [P in keyof T]: T[P] extends Record<string, any> ? DeepReadonly<T[P]> : T[P];
+};
+```
+
+但是还是存在问题不能递归处理数组类型情况。
+```typescript
+
+type test1 = {
+   l: [
+        'hi',
+        {
+          m: ['hey']
+        },
+      ]
+}
+
+type test1Ans = {
+   readonly l: readonly [
+        'hi',
+        {
+          readonly m: readonly ['hey']
+        },
+      ]
+}
+```
+考虑到数组类型本身其实是
+`{
+  0: 'hello'
+  1: 'nihao'
+  ...
+}` 本质还是key-value的组合
+
+因此还是要核心判断是否存在key-value的组合，因此需要使用keyof进行判断。
+核心**非裸联合类型参**extends不会进行分发
+
+```typescript
+type DeepReadonly<T> = {
+	readonly [P in keyof T]: keyof T[P] extends never ? T[P] : DeepReadonly<T[P]>;
+};
 ```
 
 ## 知识点总结
 
-<!-- 在这里总结相关的 TypeScript 知识点 -->
+一、 **递归类型**：TypeScript 允许类型定义递归引用自身，常用于处理嵌套结构。
+
+二、 **条件类型**：`T extends U ? X : Y` 语法允许根据类型关系动态选择类型。
+
+三、 **对象类型判断**：
+   - `T extends object` 判断 T 是否为对象类型（包括数组、函数等）
+   - 可以通过额外条件排除特定对象类型（如数组、函数）
+   - 原始类型（string、number、boolean等）不会匹配 `object`
+
 
 ## 参考链接
 
