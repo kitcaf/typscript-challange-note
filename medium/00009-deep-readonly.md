@@ -124,7 +124,12 @@ type DeepReadonly<T> = {
 
 一、 **递归类型**：TypeScript 允许类型定义递归引用自身，常用于处理嵌套结构。
 
-二、 **条件类型**：`T extends U ? X : Y` 语法允许根据类型关系动态选择类型。
+二、判断某个类型是不是带key-value（对象类型、数组）
+
+通过**非裸类型参数** extends never进行判断
+```typescript
+keyof T extends never ? U : P
+```
 
 三、 **对象类型判断**：
    - `T extends object` 判断 T 是否为对象类型（包括数组、函数等）
