@@ -19,17 +19,19 @@ type Test = TupleToUnion<Arr> // expected to be '1' | '2' | '3'
 
 ## 解题思路
 
-<!-- 在这里记录你的解题思路和学习笔记 -->
+### 解题核心
+
+- 将元组类型转换为联合类型 `T[number]`
 
 ## 代码实现
 
 ```typescript
-// 在这里实现你的解决方案
+type TupleToUnion<T extends any[]> = T[number];
 ```
 
 ## 知识点总结
 
-<!-- 在这里总结相关的 TypeScript 知识点 -->
+- T[number] - **访问 元组类型T里所有索引的类型并转换为联合类型**
 
 ## 参考链接
 
