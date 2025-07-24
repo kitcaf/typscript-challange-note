@@ -43,12 +43,33 @@ interface Result {
 ## 代码实现
 
 ```typescript
-// 在这里实现你的解决方案
+type Chainable<T extends Record<string, any> = {}> = {
+	option<K extends string, V>(
+		key: K extends keyof T ? never : K,
+		value: V,
+	): Chainable<Omit<T, K> & Record<K, V>>;
+	get(): { [P in keyof T]: T[P] };
+};
 ```
+
+### 问题？
+
+- 为什么是`Omit<T, K> & Record<K, V>`而不是`T & Record<K, V>`？
+`Omit<T, K> & Record<K, V>`可以避免&同k不同v：造成k:never的情况，不符合覆盖的目的
+因为如果这样写的话如下：
+```typescript
+type a = {name: string}
+type b = {name: number}
+
+type c = a & b 
+//根据&的原则，k相同v不同那么v的结果是never {name: never} 
+//那么就不是覆盖了。
+```
+因此每次要删除原理的k-v, 重新加入新的k-v
 
 ## 知识点总结
 
-<!-- 在这里总结相关的 TypeScript 知识点 -->
+
 
 ## 参考链接
 

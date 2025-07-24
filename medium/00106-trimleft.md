@@ -22,12 +22,18 @@ type trimmed = TrimLeft<'  Hello World  '> // 应推导出 'Hello World  '
 ## 代码实现
 
 ```typescript
-// 在这里实现你的解决方案
+type C = " " | "\n" | "\t";
+
+type TrimLeft<S extends string> = S extends `${C}${infer Re}` ? TrimLeft<Re> : S;
 ```
+
+
+
+
 
 ## 知识点总结
 
-<!-- 在这里总结相关的 TypeScript 知识点 -->
+
 
 ## 参考链接
 

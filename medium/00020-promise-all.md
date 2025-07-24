@@ -30,9 +30,38 @@ const p = PromiseAll([promise1, promise2, promise3] as const)
 // 在这里实现你的解决方案
 ```
 
+### 问题
+
+一、`values: T` 和  `values: [...T]`的区别？
+- `values: T` 只能接收一个参数，这个参数是一个数组或元组，**推断时容易退化为数组类型**。
+最明显的就是对于`[1, 1, 1]`这里类型推断大概率会推断为`number[]`
+- `values: [...T]`（或 `...values: T`）是把参数拆开，每一项都单独推断，元组类型信息不会丢失，尤其适合 as const 场景。
+
+```typescript
+values: T
+
+declare function fn<T extends any[]>(values: T): T;
+fn([1, 1, 1] as const);
+//function fn<[1, "a", true]>(values: [1, "a", true]): [1, "a", true]
+fn([1, 1, 1]);
+//function fn<number[]>(values: number[]): number[]
+
+values: [...T]
+declare function fn1<T extends any[]>(values: [...T]): T;
+fn1([1, 1, 1] as const);
+//function fn<[1, "a", true]>(values: [1, "a", true]): [1, "a", true]
+fn1([1, 1, 1]);
+//function fn1<[number, number, number]>(values: [number, number, number]): [number, number, number]
+```
+
+二、PromiseLike
+
 ## 知识点总结
 
-<!-- 在这里总结相关的 TypeScript 知识点 -->
+一、元组类型本质还是对象类型。所以是可以直接进行{[ in ]: ...} 进行映射操作
+
+
+
 
 ## 参考链接
 
